@@ -1,0 +1,48 @@
+Sub PSA_Excel_Dump_Formating()
+' PSA_Excel_Dump_Formating Macro
+' Formats daily Excel dump from Autotask PSA into format that can be used
+' Delete Title - Row1
+' Finds all blank rows and deletes them
+
+    Rows("1").Select
+    Selection.Delete
+    
+    Dim LastRowIndex As Integer
+    Dim RowIndex As Integer
+    Dim UsedRng As Range
+ 
+    Set UsedRng = ActiveSheet.UsedRange
+    LastRowIndex = UsedRng.Row - 1 + UsedRng.Rows.Count
+    Application.ScreenUpdating = False
+ 
+    For RowIndex = LastRowIndex To 1 Step -1
+        If Application.CountA(Rows(RowIndex)) = 0 Then
+            Rows(RowIndex).Delete
+        End If
+    Next RowIndex
+ 
+    Application.ScreenUpdating = True
+    
+' takes input for new sheet
+' Deletes current In_Use_Sheet
+' renames new sheet to In_Use_Sheet
+
+    NewSheeet = InputBox("Input Imported Sheet Name")
+
+    Application.DisplayAlerts = False
+    Sheets("In_Use_Sheet").Delete
+    Application.DisplayAlerts = True
+    
+Sheets(NewSheeet).Name = "In_Use_Sheet"
+
+                ' try and switch this with above
+'Select all rows
+'Add data into a table
+'Name table as In_Use_Table
+
+ActiveSheet.UsedRange
+Range("A1").Select
+ActiveSheet.ListObjects.Add(xlSrcRange, Selection.CurrentRegion, , xlYes).Name = _
+    "In_Use_Table"
+
+End Sub
